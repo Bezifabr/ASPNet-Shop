@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Ukryta strona";
+}
+
+@using Microsoft.AspNetCore.Identity
+@using LoginPage.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h1 class="display-4">Ta strona była ukryta przed zalogowaniem</h1>
+        <p>Dane z ukrytej strony</p>
+        <p>Dane z ukrytej strony</p>
+        <p>Dane z ukrytej strony</p>
+        <p>Dane z ukrytej strony</p>
+        <p>Dane z ukrytej strony</p>
+        <p>Dane z ukrytej strony</p>
+    }
+    else
+    {
+        <h1 class="display-4">Strona niedostępna</h1>
+        <p>Ta strona jest ukryta i nie można jej znaleźć w górnym menu.</p>
+
+    }
+</div>

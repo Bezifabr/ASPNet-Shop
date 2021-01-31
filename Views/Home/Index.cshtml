@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using LoginPage.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h1 class="display-4">Gratulacje!</h1>
+        <p>Logowanie powiodło się.</p>
+        <p>Oto ukryta treść!</p>
+    }
+    else
+    {
+        <h1 class="display-4">Strona logowania</h1>
+        <p>Witam na stronie służącej do prezentacji systemu autentykacji użytkowników!</p>
+        <p>Aby odkryć ukrytą treść należy się <a href="../identity/account/login">zalogować</a>.</p>
+
+    }
+</div>

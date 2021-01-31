@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Ukryte dane";
+}
+
+@using Microsoft.AspNetCore.Identity
+@using LoginPage.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h1 class="display-4">Strona z ukrytymi informacjami</h1>
+        <p>Więcej ukrytej treści</p>
+        <p>Więcej ukrytej treści</p>
+        <p>Więcej ukrytej treści</p>
+        <p>Więcej ukrytej treści</p>
+        <p>Więcej ukrytej treści</p>
+        <p>Więcej ukrytej treści</p>
+    }
+    else
+    {
+        <h1 class="display-4">Strona z ukrytymi informacjami</h1>
+        <p>Na tej stronie znajduką się informacje niedostępne dla niezalogowanego użytkownika.</p>
+        <p>Aby odkryć ukrytą treść należy się <a href="../identity/account/login">zalogować</a>.</p>
+
+    }
+</div>
