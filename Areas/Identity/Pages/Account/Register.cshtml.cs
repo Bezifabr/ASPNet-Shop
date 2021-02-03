@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using LoginPage.Data;
 
 namespace LoginPage.Areas.Identity.Pages.Account
 {
@@ -24,17 +25,20 @@ namespace LoginPage.Areas.Identity.Pages.Account
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly LoginPageDBContext _loginPageContext;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            LoginPageDBContext loginPageContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _loginPageContext = loginPageContext;
         }
 
         [BindProperty]
@@ -46,6 +50,12 @@ namespace LoginPage.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Nazwa użytkownika")]
+            [DataType(DataType.Text)]
+            [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej {2} znaków, a maksymalnie {1}).", MinimumLength = 3)]
+            public string Username { get; set; }
+
             [Required(ErrorMessage = "Email jest wymagany")]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -61,6 +71,29 @@ namespace LoginPage.Areas.Identity.Pages.Account
             [Display(Name = "Potwierdź hasło")]
             [Compare("Password", ErrorMessage = "Hasła nie są identyczne.")]
             public string ConfirmPassword { get; set; }
+
+            [Display(Name = "Imię")]
+            [DataType(DataType.Text)]
+            [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej {2} znaków, a maksymalnie {1}).", MinimumLength = 1)]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Nazwisko")]
+            [DataType(DataType.Text)]
+            [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej {2} znaków, a maksymalnie {1}).", MinimumLength = 1)]
+            public string LastName { get; set; }
+            
+            [Display(Name = "Adres")]
+            public Address Address { get; set; }
+
+
+            [Display(Name = "Wykształcenie")]
+            [DataType(DataType.Text)]
+            [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej {2} znaków, a maksymalnie {1}).", MinimumLength = 1)]
+            public string Education { get; set; }
+
+            [Display(Name = "Zainteresowania")]
+            public string Hobbies { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,8 +108,11 @@ namespace LoginPage.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = Input.Email, Email = Input.Email };
+                var user = new AppUser { UserName = Input.Username, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Address = Input.Address, Education = Input.Education, Hobbies = Input.Hobbies };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                Address address = new Address { City = Input.Address.City, Street = Input.Address.Street, ZipCode = Input.Address.ZipCode};
+                address.Users.Add(user);
+                _loginPageContext.Add(address);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
