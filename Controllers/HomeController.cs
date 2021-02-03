@@ -1,4 +1,5 @@
 ﻿using LoginPage.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,6 +29,7 @@ namespace LoginPage.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Hidden()
         {
             return View();
