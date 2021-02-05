@@ -17,12 +17,16 @@ namespace Shop.Models
         public string name { get; set; }
 
         [Display(Name = "Opis")]
-        [DataType(DataType.Text)]
+        [DataType(DataType.MultilineText)]
         public string description { get; set; }
 
-        [Display(Name = "Miniaturka")]
-        [DataType(DataType.Text)]
+        [Display(Name = "Zdjęcie")]
+        [DataType(DataType.ImageUrl)]
         public string pictureUrl { get; set; }
+
+        [Display(Name = "Cena")]
+        [DataType(DataType.Currency)]
+        public decimal price { get; set; }
 
     }
 }
