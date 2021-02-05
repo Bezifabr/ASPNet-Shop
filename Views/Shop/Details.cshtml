@@ -15,29 +15,32 @@
 <body>
 
     <section>
-        <div class="ItemDetails">
+        <main class="ItemDetailsPage">
+            <div class="ItemDetails">
 
-            <div class="Preview">
-                <img src="@ViewBag.Item.pictureUrl" />
-            </div>
-
-            <div class="Description">
-
-                <h1 class="Title">
-                    @ViewBag.Title
-                </h1>
-
-                <div class="Text">
-                    @ViewBag.Item.description
+                <div class="Preview">
+                    <img src="@ViewBag.Item.pictureUrl" />
                 </div>
 
-                <div class="Price">
-                    Cena: @ViewBag.Item.price zł
+                <div class="Description">
+
+                    <h1 class="Title">
+                        @ViewBag.Title
+                    </h1>
+
+                    <div class="Text">
+                        @ViewBag.Item.description
+                    </div>
+
+                    <div class="Price">
+                        Cena: @ViewBag.Item.price zł
+                    </div>
+
+                    <button class="CartButton btn btn-outline-dark">
+                        Dodaj do koszyka
+                    </button>
                 </div>
 
-                <button class="CartButton btn btn-outline-dark">
-                    Dodaj do koszyka
-                </button>
             </div>
 
             <a href="/Shop/Products">
@@ -45,25 +48,23 @@
                     Powrót
                 </button>
             </a>
-        </div>
 
 
-
-        <div class="Suggestions">
-            <h2>Inne produkty:</h2>
-            <div class="ShopItemsList">
-                @foreach (var item in ViewBag.SuggestedItems)
-                {
-                    <div class="ShopItem">
-                        <a href="/Shop/Products/Details/@item.id">
-                            <img src="@item.pictureUrl" />
-                        </a>
-                        @item.name
-                    </div>
-                }
+            <div class="Suggestions">
+                <h2>Inne produkty:</h2>
+                <div class="ShopItemsList">
+                    @foreach (var item in ViewBag.SuggestedItems)
+                    {
+                        <div class="ShopItem">
+                            <a href="/Shop/Products/Details/@item.id">
+                                <img src="@item.pictureUrl" />
+                            </a>
+                            @item.name
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
-
+        </main>
     </section>
 
 </body>
