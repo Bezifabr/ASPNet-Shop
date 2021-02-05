@@ -39,8 +39,14 @@ namespace LoginPage
 
             var builder = new SqlConnectionStringBuilder(
                 Configuration.GetConnectionString("LoginPageDBContextConnection"));
-    //        builder.Password = Configuration["DbPassword"];
             _connection = builder.ConnectionString;
+
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +64,8 @@ namespace LoginPage
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseRouting();
 
@@ -66,9 +74,9 @@ namespace LoginPage
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

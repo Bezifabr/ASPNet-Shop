@@ -1,15 +1,14 @@
 ﻿@page
-@model Shop.Views.Shop.DetailsModel
+@model DetailsModel
 @{
     ViewBag.Title = ViewBag.Item.name;
-    //((ShopController)this.ViewContext.Controller).
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="~/css/Shop.css" />
     <meta name="viewport" content="width=device-width" />
 </head>
@@ -68,5 +67,24 @@
         </main>
     </section>
 
+    <script>
+
+        $('.CartButton').click(function () {
+            var ItemId = @ViewBag.Item.id;
+
+            $.ajax({
+                //url: '@Url.Action("AddToCart", "ShoppingCartController")',
+                url: '/ShoppingCart/AddToCart',
+                type: 'POST',
+                data: ({
+                    id : ItemId
+                }),
+                cache: false,
+                success: function (data) {
+                    console.log('SUCCESS');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

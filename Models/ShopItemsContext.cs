@@ -13,5 +13,17 @@ namespace Shop.Models
         {
         }
         public DbSet<ShopItem> ShopItems { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<CartItem>()
+                .HasKey(c => c.CardItemId);
+
+            builder.Entity<CartItem>()
+                .HasOne(s => s.ShopItem);
+        }
     }
 }
