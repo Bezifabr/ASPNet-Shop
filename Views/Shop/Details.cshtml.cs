@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Models;
@@ -13,34 +14,5 @@ namespace Shop.Views.Shop
     [AllowAnonymous]
     public class DetailsModel : PageModel
     {
-        private readonly ShopItemsContext _shopItemsContext;
-
-        DetailsModel(ShopItemsContext shopItemsContext)
-        {
-            _shopItemsContext = shopItemsContext;
-        }
-
-        [BindProperty]
-        public OutputModel Output { get; set; }
-        public string ReturnUrl { get; set; }
-
-
-        public class OutputModel
-        {
-            public ICollection<ShopItem> shopItems;
-            
-        }
-
-        public async Task OnGetAsync(string returnUrl = null)
-        {
-
-            foreach (var item in _shopItemsContext.ShopItems)
-            {
-                Output.shopItems.Add(item);
-            }
-
-
-            ReturnUrl = returnUrl;
-        }
     }
 }
