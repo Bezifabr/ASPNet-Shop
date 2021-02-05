@@ -50,14 +50,39 @@ namespace Shop.Controllers
             ViewBag.SuggestedItems = new List<ShopItem>();
             int i = 0;
 
-            foreach (var item in _shopItemsContext.ShopItems)
+            List<ShopItem> items = _shopItemsContext.ShopItems.ToList<ShopItem>();
+
+            int j = id - 3;
+            if (id < 3)
+                j = 0;
+
+
+            for(; j < items.Count; j++)
             {
-                if (i < 5)
-                {
-                    ViewBag.SuggestedItems.Add(item);
-                    i++;
-                }
+                if (j == id - 1)
+                    j++;
+
+                if (i >= 5)
+                    break;
+                i++;
+
+                if (j >= items.Count - 1)
+                    j = 0;
+
+                ViewBag.SuggestedItems.Add(items[j]);
+
+
+
             }
+
+            //foreach (var item in _shopItemsContext.ShopItems)
+            //{
+            //    if (i < 5)
+            //    {
+            //        ViewBag.SuggestedItems.Add(item);
+            //        i++;
+            //    }
+            //}
 
             return View();
         }

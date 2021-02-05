@@ -8,46 +8,14 @@
 
 <html>
 <head>
-    <style>
 
-        section {
-            width: 1000px;
-            height: 100%;
-        }
-
-        .ShopItem .Preview {
-            width: 400px;
-            height: 400px;
-            float: left;
-        }
-
-            .ShopItem .Preview img {
-                width: 400px;
-                height: 400px;
-                border: 2px solid;
-            }
-
-        .ShopItem .Description {
-            float: left;
-            width: 600px;
-            padding: 20px;
-            height: 100%;
-        }
-
-            .ShopItem .Description .Price {
-                font-weight: bold;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-    </style>
-
-
+    <link rel="stylesheet" href="~/css/Shop.css" />
     <meta name="viewport" content="width=device-width" />
 </head>
 <body>
 
     <section>
-        <div class="ShopItem">
+        <div class="ItemDetails">
 
             <div class="Preview">
                 <img src="@ViewBag.Item.pictureUrl" />
@@ -72,13 +40,29 @@
                 </button>
             </div>
 
+            <a href="/Shop/Products">
+                <button class="Button btn btn-outline-dark">
+                    Powrót
+                </button>
+            </a>
         </div>
 
-        <a href="/Shop/Products">
-            <button class="Button btn btn-outline-dark">
-                Powrót
-            </button>
-        </a>
+
+
+        <div class="Suggestions">
+            <h2>Inne produkty:</h2>
+            <div class="ShopItemsList">
+                @foreach (var item in ViewBag.SuggestedItems)
+                {
+                    <div class="ShopItem">
+                        <a href="/Shop/Products/Details/@item.id">
+                            <img src="@item.pictureUrl" />
+                        </a>
+                        @item.name
+                    </div>
+                }
+            </div>
+        </div>
 
     </section>
 
