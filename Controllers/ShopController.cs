@@ -1,8 +1,12 @@
 ﻿using LoginPage.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Shop.Logic;
 using Shop.Models;
+using Shop.Views.Shop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +28,7 @@ namespace Shop.Controllers
             _logger = logger;
             _shopItemsContext = shopItemsContext;
         }
-    
+
         [Route("Shop/Products/")]
         [Route("Shop/Products/cat={cat}")]
         public IActionResult Items(string cat)
@@ -48,42 +52,19 @@ namespace Shop.Controllers
             }
 
             ViewBag.SuggestedItems = new List<ShopItem>();
-            int i = 0;
-
             List<ShopItem> items = _shopItemsContext.ShopItems.ToList<ShopItem>();
 
+            int i = 0;
             int j = id - 3;
-            if (id < 3)
-                j = 0;
-
-
-            for(; j < items.Count; j++)
+            if (id < 3) j = 0;
+            for (; j < items.Count; j++)
             {
-                if (j == id - 1)
-                    j++;
-
-                if (i >= 5)
-                    break;
-                i++;
-
-                if (j >= items.Count - 1)
-                    j = 0;
-
+                if (i >= 5) break;
+                if (j == id - 1) j++;
+                if (j >= items.Count - 1) j = 0;
                 ViewBag.SuggestedItems.Add(items[j]);
-
-
-
+                i++;
             }
-
-            //foreach (var item in _shopItemsContext.ShopItems)
-            //{
-            //    if (i < 5)
-            //    {
-            //        ViewBag.SuggestedItems.Add(item);
-            //        i++;
-            //    }
-            //}
-
             return View();
         }
 
