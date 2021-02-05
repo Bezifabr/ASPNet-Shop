@@ -58,11 +58,16 @@ html {
   min-height: 100%;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+
+main{
+    width: 1000px;
+    height: 110%;
+    margin-bottom: 100px;
+    float:left;
 }
+
 .footer {
+  clear:both;
   position: absolute;
   bottom: 0;
   width: 100%;

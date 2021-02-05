@@ -1,0 +1,86 @@
+﻿@page
+@model Shop.Views.Shop.DetailsModel
+@{
+    ViewBag.Title = ViewBag.Item.name;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+
+        section {
+            width: 1000px;
+            height: 100%;
+        }
+
+        .ShopItem .Preview {
+            width: 400px;
+            height: 400px;
+            float: left;
+        }
+
+            .ShopItem .Preview img {
+                width: 400px;
+                height: 400px;
+                border: 2px solid;
+            }
+
+        .ShopItem .Description {
+            float: left;
+            width: 600px;
+            padding: 20px;
+            height: 100%;
+        }
+
+            .ShopItem .Description .Price {
+                font-weight: bold;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+    </style>
+
+
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+    <section>
+        <div class="ShopItem">
+
+            <div class="Preview">
+                <img src="@ViewBag.Item.pictureUrl" />
+            </div>
+
+            <div class="Description">
+
+                <h1 class="Title">
+                    @ViewBag.Title
+                </h1>
+
+                <div class="Text">
+                    @ViewBag.Item.description
+                </div>
+
+                <div class="Price">
+                    Cena: 50,00 PLN
+                </div>
+
+                <button class="Button btn btn-outline-dark">
+                    Dodaj do koszyka
+                </button>
+            </div>
+
+        </div>
+
+        <a href="/Shop/Products">
+            <button class="Button btn btn-outline-dark">
+                Powrót
+            </button>
+        </a>
+
+    </section>
+
+</body>
+</html>

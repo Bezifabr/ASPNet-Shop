@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +30,12 @@ namespace LoginPage
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<ShopItemsContext>(options =>
+            {
+                var connectionStrings = Configuration.GetConnectionString("ShopItemsContextConnection");
+                options.UseSqlServer(connectionStrings);
+            });
 
             var builder = new SqlConnectionStringBuilder(
                 Configuration.GetConnectionString("LoginPageDBContextConnection"));
