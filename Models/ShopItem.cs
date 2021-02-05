@@ -28,5 +28,7 @@ namespace Shop.Models
         [DataType(DataType.Currency)]
         public decimal price { get; set; }
 
+        public CartItem CartItem { get; set; }
+
     }
 }
