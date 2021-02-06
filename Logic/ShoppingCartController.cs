@@ -50,6 +50,23 @@ namespace Shop.Logic
             _shopItemContext.SaveChanges();
         }
 
+        [HttpDelete]
+        public void RemoveFromCart(int id)
+        {
+            ShoppingCartId = GetCartId();
+
+            var cartItem = _shopItemContext.CartItems.SingleOrDefault(
+                c => c.CartId == ShoppingCartId
+                && c.ShopItemId == id);
+            if (cartItem != null)
+            {
+                cartItem.Quantity--;
+                if (cartItem.Quantity == 0)
+                    _shopItemContext.Remove(cartItem);
+            }
+            _shopItemContext.SaveChanges();
+        }
+
         public string GetCartId()
         {
             var sessionCartId = HttpContext.Session.GetString(CartSessionKey);
