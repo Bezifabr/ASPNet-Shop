@@ -1,0 +1,101 @@
+﻿@page
+@model Shop.Views.Admin.ShopItemCreatorModel
+@{
+    ViewBag.Title = "Panel Administratora";
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/Shop.css" />
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+        .ShopItemManagerForm input {
+            float: left;
+        }
+
+        .ShopItemManagerForm textarea {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <a href="/AdminPanel/ShopItemsManager"><button class="BackButton btn btn-outline-dark">Powrót do zarządzania przedmiotami</button></a><br />
+        <main class="ItemDetailsPage">
+            <div class="ItemDetails">
+
+                <div class="Description">
+
+                    @using (Html.BeginForm())
+                    {
+
+                        <div class="Title">
+                            Tytuł:<br />
+                            <input style="width:500px;" id="Name" type="text" name="Title" runat="server" value="" />
+                        </div>
+
+                        <div class="PictureUrl">
+                            Link do obrazka:<br />
+                            <input style="width: 500px;" id="PictureUrl" type="text" name="Title" runat="server" value="" />
+                        </div>
+
+                        <div class="Text" style="clear:both;">
+                            Opis:
+                            <textarea id="Description" name="Description" cols="100" rows="20" runat="server"></textarea>
+                        </div>
+
+                        <div class="Price">
+                            Cena: <input type="text" id="Price" name="Price" runat="server" value="" />  zł
+                        </div>
+
+                        <input class="SaveButton btn btn-outline-dark" type="submit" value="Zapisz zmiany" />
+                    }
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script runat="server">
+
+
+        $('.SaveButton').click(function () {
+
+            var name = $('#Name').val();
+            var pictureUrl = $('#PictureUrl').val();
+            var description = $('#Description').val();
+            var price = $('#Price').val();
+
+            var item = {
+                'name': name,
+                'pictureUrl': pictureUrl,
+                'description': description,
+                'price': price
+                };
+
+            $.ajax({
+                url: '/Admin/AddShopItem',
+                type: 'POST',
+                data: ({
+                    name: item.name,
+                    description: item.description,
+                    pictureUrl: item.pictureUrl,
+                    price: item.price
+                }),
+                cache: false,
+                success: function (data) {
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
