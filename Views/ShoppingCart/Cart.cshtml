@@ -43,15 +43,40 @@
                             <a href="/Shop/Products/Details/@shopItem.id">
                                 <img src="@shopItem.pictureUrl" />
                             </a>
-                            <b>@shopItem.name</b>  @shopItem.price zł  x  @cartItem.Quantity  =  @itemSumPrice
-                            <button class="btn btn-outline-dark">usuń z koszyka</button>
+                            <b>@shopItem.name</b> @shopItem.price zł  x  @cartItem.Quantity  =  @itemSumPrice
+                            <button value="@shopItem.id" class="deleteBtn btn btn-outline-dark">usuń z koszyka</button>
                         </div>
                     }
                 }
             </div>
-            Suma : @sum zł
+            <div class="sum">
+                Suma : @sum zł
+            </div>
         </main>
     </section>
+
+    <script>
+
+
+        $('.deleteBtn').click(function () {
+
+            var shopItemId = $(this).attr('value');
+            $.ajax({
+                url: '/ShoppingCart/RemoveFromCart',
+                type: 'DELETE',
+                data: ({
+                    id: shopItemId
+                }),
+                cache: false,
+                success: function () {
+                    console.log('SUCCESS');
+                }
+            }).done(function () {
+                document.location.reload(true);
+            });
+        });
+    </script>
+
 
 </body>
 </html>
