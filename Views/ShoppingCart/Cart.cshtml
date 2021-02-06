@@ -1,0 +1,82 @@
+﻿@page
+@model Shop.Views.ShoppingCart.CartModel
+@{
+    ViewBag.Title = new String("Koszyk");
+    decimal sum = 0;
+}
+
+@inject ShopItemsContext shopItemsContext;
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/Shop.css" />
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+        .ShoppingCartPage .CartItemsList .CartItem img {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <main class="ShoppingCartPage">
+
+            <h2>Produkty w koszyku:</h2>
+            <div class="CartItemsList">
+
+
+                @foreach (var cartItem in shopItemsContext.CartItems)
+                {
+                    if (cartItem.CartId == ViewBag.CartId)
+                    {
+
+                        var shopItem = shopItemsContext.ShopItems.SingleOrDefault(s => s.id == cartItem.ShopItemId);
+                        var itemSumPrice = shopItem.price * cartItem.Quantity;
+                        sum += itemSumPrice;
+
+                        <div class="CartItem">
+                            <a href="/Shop/Products/Details/@shopItem.id">
+                                <img src="@shopItem.pictureUrl" />
+                            </a>
+                            <b>@shopItem.name</b> @shopItem.price zł  x  @cartItem.Quantity  =  @itemSumPrice
+                            <button value="@shopItem.id" class="deleteBtn btn btn-outline-dark">usuń z koszyka</button>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="sum">
+                Suma : @sum zł
+            </div>
+        </main>
+    </section>
+
+    <script>
+
+
+        $('.deleteBtn').click(function () {
+
+            var shopItemId = $(this).attr('value');
+            $.ajax({
+                url: '/ShoppingCart/RemoveFromCart',
+                type: 'DELETE',
+                data: ({
+                    id: shopItemId
+                }),
+                cache: false,
+                success: function () {
+                    console.log('SUCCESS');
+                }
+            }).done(function () {
+                document.location.reload(true);
+            });
+        });
+    </script>
+
+
+</body>
+</html>

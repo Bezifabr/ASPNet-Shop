@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using LoginPage.Areas.Identity.Data
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<ul class="navbar-nav">
+    <li class="nav-item">
+        <a class="nav-link text-dark" id="ShoppingCart" href="/Shop/Cart">Koszyk</a>
+    </li>
+</ul>

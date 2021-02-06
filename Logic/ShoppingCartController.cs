@@ -50,9 +50,28 @@ namespace Shop.Logic
             _shopItemContext.SaveChanges();
         }
 
+        [HttpDelete]
+        public void RemoveFromCart(int id)
+        {
+            ShoppingCartId = GetCartId();
+
+            var cartItem = _shopItemContext.CartItems.SingleOrDefault(
+                c => c.CartId == ShoppingCartId
+                && c.ShopItemId == id);
+            if (cartItem != null)
+            {
+                cartItem.Quantity--;
+                if (cartItem.Quantity == 0)
+                    _shopItemContext.Remove(cartItem);
+            }
+            _shopItemContext.SaveChanges();
+        }
+
         public string GetCartId()
         {
-            if (HttpContext.Session.GetString(CartSessionKey) == null)
+            var sessionCartId = HttpContext.Session.GetString(CartSessionKey);
+
+            if (sessionCartId == null)
             {
                 if (!string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
                 {
@@ -64,9 +83,11 @@ namespace Shop.Logic
                     HttpContext.Session.SetString(CartSessionKey, tempCartId.ToString());
                 }
             }
-            return HttpContext.Session.GetString(CartSessionKey);
+            sessionCartId = HttpContext.Session.GetString(CartSessionKey);
+            return sessionCartId;
         }
 
+        [HttpGet]
         public List<CartItem> GetCartItems()
         {
             ShoppingCartId = GetCartId();
@@ -75,5 +96,13 @@ namespace Shop.Logic
                 c => c.CartId == ShoppingCartId).ToList();
         }
 
+       [Route("Shop/Cart")]
+        public IActionResult Cart()
+        {
+            ViewBag.CartItems = _shopItemContext.CartItems.ToList();
+            ViewBag.CartId = GetCartId();
+
+            return View();
+        }
     }
 }

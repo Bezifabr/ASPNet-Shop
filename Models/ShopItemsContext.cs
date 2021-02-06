@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,15 @@ namespace Shop.Models
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<ShopItem>()
+                .HasKey(s => s.id);
+
             builder.Entity<CartItem>()
                 .HasKey(c => c.CardItemId);
 
             builder.Entity<CartItem>()
-                .HasOne(s => s.ShopItem);
+                .HasOne(c => c.ShopItem)
+                .WithOne(s => s.CartItem);
         }
     }
 }
