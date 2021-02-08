@@ -1,0 +1,30 @@
+﻿@page
+@model Shop.Views.Admin.IndexModel
+@{
+    ViewBag.Title = "Panel Administratora";
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <link rel="stylesheet" href="~/css/Shop.css" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+
+    <section>
+
+        <a href="AdminPanel/ShopItemsManager"><button class="btn btn-outline-dark">Zarządzaj produktami</button></a>
+        <a href="AdminPanel/ShopItemsCategoriesManager"><button class="btn btn-outline-dark">Zarządzaj kategoriami</button></a>
+
+    </section>
+
+
+</body>
+</html>

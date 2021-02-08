@@ -1,0 +1,136 @@
+﻿@page
+@model Shop.Views.Admin.ShopItemDetailsModel
+@{
+    ViewBag.Title = "Panel Administratora";
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/Shop.css" />
+    <meta name="viewport" content="width=device-width" />
+
+    <style>
+        .ShopItemManagerForm input {
+            float: left;
+        }
+
+        .ShopItemManagerForm textarea {
+            clear: both;
+        }
+
+        .ItemDetailsPage{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <a href="/AdminPanel/ShopItemsManager"><button class="BackButton btn btn-outline-dark">Powrót do zarządzania przedmiotami</button></a><br/>
+        <main class="ItemDetailsPage">
+            <div class="ItemDetails">
+
+                <div class="Preview">
+                    <img src="@ViewBag.Item.pictureUrl" />
+                </div>
+
+                <div class="Description">
+
+                    @using (Html.BeginForm())
+                    {
+
+                        <div class="Title">
+                            Tytuł:<br />
+                            <input style="width:500px;" id="Name" type="text" name="Title" runat="server" value="@ViewBag.Item.name" />
+                        </div>
+
+                        <div class="PictureUrl">
+                            Link do obrazka:<br />
+                            <input style="width: 500px;" id="PictureUrl" type="text" name="Title" runat="server" value="@ViewBag.Item.pictureUrl" />
+                        </div>
+
+                        <div class="Text">
+                            Opis:
+                            <textarea id="Description" name="Description" cols="100" rows="20" runat="server">@ViewBag.Item.description</textarea>
+                        </div>
+
+                        <div class="Price">
+                            Cena: <input type="text" id="Price" name="Price" runat="server" value="@ViewBag.Item.price" />  zł
+                        </div>
+
+                        <input class="SaveButton btn btn-outline-dark" type="submit" value="Zapisz zmiany" />
+                        <input class="DeleteButton btn btn-outline-dark" type="submit" value="Usuń produkt" />
+                    }
+                </div>
+
+            </div>
+
+        </main>
+    </section>
+
+
+    <script runat="server">
+
+        $('.SaveButton').click(function () {
+
+            var name = $('#Name').val();
+            var pictureUrl = $('#PictureUrl').val();
+            var description = $('#Description').val();
+            var price = $('#Price').val();
+
+            var item = {
+                'id': @ViewBag.Item.id,
+                'name': name,
+                'pictureUrl': pictureUrl,
+                'description': description,
+                'price': price
+                };
+
+            var ItemId = @ViewBag.Item.id;
+
+            $.ajax({
+                url: '/Admin/ChangeShopItem',
+                type: 'POST',
+                data: ({
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                    pictureUrl: item.pictureUrl,
+                    price: item.price
+                }),
+                cache: false,
+                success: function (data) {
+                    $('#Name').val(name);
+                    $('#Description').val(description);
+                    $('#Price').val(price);
+                    $('#PictureUrl').val(pictureUrl);
+                }
+            });
+        });
+
+
+        $('.DeleteButton').click(function () {
+
+            var shopItemId = @ViewBag.Item.id;
+            $.ajax({
+                url: '/Admin/RemoveShopItem',
+                type: 'DELETE',
+                data: ({
+                    id: shopItemId
+                }),
+                cache: false,
+                success: function () {
+                    window.location.href = '/AdminPanel/ShopItemsManager';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

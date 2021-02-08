@@ -22,6 +22,7 @@ namespace LoginPage.Areas.Identity
                 services.AddDbContext<LoginPageDBContext>(options => options.UseSqlServer(builder.ConnectionString));
 
                 services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<LoginPageDBContext>();
             });
         }
